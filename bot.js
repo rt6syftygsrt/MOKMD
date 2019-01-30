@@ -33,147 +33,50 @@ if (x) x.join();
 
 
 
-
-client.on("message", (message) => {
-                        if (message.content.startsWith("ch")) {
-                                    if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.reply("You Don't Have `MANAGE_CHANNELS` Premissions ");
-                                let args = message.content.split(" ").slice(1);
-                            message.guild.createChannel(args.join(' '), 'text');
-                            message.channel.sendMessage('تـم إنـشاء روم كتابي')
-                            
-                        }
-                        });
-
-
-
-client.on("message", (message) => {
-                        if (message.content.startsWith("cv")) {
-                                    if (!message.member.hasPermission('MANAGE_CHANNELS')) return message.reply("You Don't Have `MANAGE_CHANNELS` Premissions ");
-                                let args = message.content.split(" ").slice(1);
-                            message.guild.createChannel(args.join(' '), 'voice');
-                            message.channel.sendMessage('تـم إنـشاء روم صـوتي')
-                            
-                        }
-                        });
-
-
-
-
-
-lient.on('message', message => {
-    var prefix = "$";
-     if(message.content === prefix + "mu") {
-     if(!message.channel.guild) return message.reply('** This command only for servers**');
-                    
-     if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' **__ليس لديك صلاحيات__**');
-         message.channel.overwritePermissions(message.guild.id, {
-         SEND_MESSAGES: false
-                    
-    }).then(() => {
-             message.reply("**__تم تقفيل الشات__ ✅ **")
-       });
-    }
-    if(message.content === prefix + "un") {
-    if(!message.channel.guild) return message.reply('** This command only for servers**');
-                    
-    if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('**__ليس لديك صلاحيات__**');
-        message.channel.overwritePermissions(message.guild.id, {
-        SEND_MESSAGES: true
-                    
-         }).then(() => {
-          message.reply("**__تم فتح الشات__✅**")
-      });
-  }
-                           
-});
-
-
+let rab6 = JSON.parse(fs.readFileSync('./rab6.json' , 'utf8'));
 client.on('message', message => {
-var prefix = "#";
-       if(message.content === prefix + "hide") {
-                           if(!message.channel.guild) return message.reply('** This command only for servers**');
-
-   if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' **__ليس لديك صلاحيات__**');
-              message.channel.overwritePermissions(message.guild.id, {
-            READ_MESSAGES: false
-
-              }).then(() => {
-                  message.reply("**__تم احفاء الشات__ ✅ **")
-              });
-                }
-
-    if(message.content === prefix + "show") {
-                        if(!message.channel.guild) return message.reply('** This command only for servers**');
-
-   if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('**__ليس لديك صلاحيات__**');
-              message.channel.overwritePermissions(message.guild.id, {
-            READ_MESSAGES: true
-
-              }).then(() => {
-                  message.reply("**__تم اضهار الشات__✅**")
-              });
-    }
-       
+if(message.content.startsWith(prefix + "toggleLink")) {
+if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
+if(!rab6[message.guild.id]) rab6[message.guild.id] = {
+onoff: 'Off'
+}
+if(rab6[message.guild.id].onoff === 'Off') return [message.channel.send(`**✅ The Invite Link Cmd Is __𝐎𝐍__ !**`), rab6[message.guild.id].onoff = 'On']
+if(rab6[message.guild.id].onoff === 'On') return [message.channel.send(`**⛔ The Invite Link Cmd Is __𝐎𝐅𝐅__ !**`), rab6[message.guild.id].onoff = 'Off']
+fs.writeFile("./rab6.json", JSON.stringify(rab6), (err) => {
+if (err) console.error(err)
+.catch(err => {
+console.error(err);
 });
-
-
-client.on('message', msg => {
-  if(msg.content === '*hide') {
-    msg.guild.channels.forEach(c => {
-      c.overwritePermissions(msg.guild.id, {
-        SEND_MESSAGES: false,
-        READ_MESSAGES: false
-    });
 });
-    msg.channel.send('**تم اخفاء جميع الرومات**')
-  }
-});
-client.on('message', msg => {
-  if(msg.content === '*show') {
-    msg.guild.channels.forEach(c => {
-      c.overwritePermissions(msg.guild.id, {
-        SEND_MESSAGES: true,
-        READ_MESSAGES: true
-    });
-});
-    msg.channel.send('**تم اظهار جميع الرومات**')
-  }
-});
-
-
-
-
+}
+})
+const coolDown = new Set();
 client.on('message', message => {
-     if (message.content === (prefix + "bot")) {
-         if(!message.channel.guild) return;
-     let embed = new Discord.RichEmbed()
-  .setColor("#8650a7")
-  .addField("** :white_check_mark: Servers: **" , client.guilds.size)
-  .addField("** :white_check_mark: Users: **" , client.users.size)
-  .addField("** :white_check_mark: Channels: **" , client.channels.size)
-    .addField("** :rocket: Ping **" , Date.now() - message.createdTimestamp)
-    .setTimestamp()
-  message.channel.sendEmbed(embed);
-    }
+if (message.content.startsWith("ﺭﺍﺑﻂ ")) {
+if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+if(!rab6[message.guild.id]) rab6[message.guild.id] = {
+onoff: 'Off'
+}
+if(rab6[message.guild.id].onoff === 'Off') return;
+if(coolDown.has(message.author.id)) return message.channel.send(`**⏱ | ${message.author.username}, your invite 💴 link refreshes in \`\`1 Day\`\`.**`);
+message.channel.createInvite({
+thing: true,
+maxUses: 5,
+maxAge: 86400
+}).then(invite =>
+message.author.sendMessage(invite.url)
+)
+message.channel.send("** ﺗﻢ ﺍﺭﺳﺎﻝ ﺍﻟﺮﺍﺑﻂ ﺑﺮﺳﺎﻟﺔ ﺧﺎﺻﺔ **") .then(() => {
+coolDown.add(message.author.id);
 });
-
-
-client.on('message', message => {
-     if (message.content === "help-") {
-message.author.send("**اوامر البوت**" + `  **
-لمسح شات اكتب  مسح
- 
-لو تبي تنشى شات كتابي اكتب --->ch
-
-لو تبي تنشى روم صوتي اكتب --->cv 
-
-لوتبي تقفل شات اكتب ---> $mu
-
-لو تبي تفك شات اكتب $un
-**`);
-    }
-});     
-
+message.author.send(`** ﻣﺪﺓ ﺍﻟﺮﺍﺑﻂ : ﻳـﻮﻡ
+ﻋﺪﺩ ﺍﺳﺘﺨﺪﺍﻣﺎﺕ ﺍﻟﺮﺍﺑﻂ : 5 **`)
+}
+setTimeout(() => {
+coolDown.remove(message.author.id);
+},86400000);
+});
 
 
 
