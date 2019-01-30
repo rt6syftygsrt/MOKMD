@@ -57,3 +57,124 @@ client.on("message", (message) => {
                         });
 
 
+
+
+
+lient.on('message', message => {
+    var prefix = "$";
+     if(message.content === prefix + "mu") {
+     if(!message.channel.guild) return message.reply('** This command only for servers**');
+                    
+     if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' **__ليس لديك صلاحيات__**');
+         message.channel.overwritePermissions(message.guild.id, {
+         SEND_MESSAGES: false
+                    
+    }).then(() => {
+             message.reply("**__تم تقفيل الشات__ ✅ **")
+       });
+    }
+    if(message.content === prefix + "un") {
+    if(!message.channel.guild) return message.reply('** This command only for servers**');
+                    
+    if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('**__ليس لديك صلاحيات__**');
+        message.channel.overwritePermissions(message.guild.id, {
+        SEND_MESSAGES: true
+                    
+         }).then(() => {
+          message.reply("**__تم فتح الشات__✅**")
+      });
+  }
+                           
+});
+
+
+client.on('message', message => {
+var prefix = "#";
+       if(message.content === prefix + "hide") {
+                           if(!message.channel.guild) return message.reply('** This command only for servers**');
+
+   if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' **__ليس لديك صلاحيات__**');
+              message.channel.overwritePermissions(message.guild.id, {
+            READ_MESSAGES: false
+
+              }).then(() => {
+                  message.reply("**__تم احفاء الشات__ ✅ **")
+              });
+                }
+
+    if(message.content === prefix + "show") {
+                        if(!message.channel.guild) return message.reply('** This command only for servers**');
+
+   if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('**__ليس لديك صلاحيات__**');
+              message.channel.overwritePermissions(message.guild.id, {
+            READ_MESSAGES: true
+
+              }).then(() => {
+                  message.reply("**__تم اضهار الشات__✅**")
+              });
+    }
+       
+});
+
+
+client.on('message', msg => {
+  if(msg.content === '*hide') {
+    msg.guild.channels.forEach(c => {
+      c.overwritePermissions(msg.guild.id, {
+        SEND_MESSAGES: false,
+        READ_MESSAGES: false
+    });
+});
+    msg.channel.send('**تم اخفاء جميع الرومات**')
+  }
+});
+client.on('message', msg => {
+  if(msg.content === '*show') {
+    msg.guild.channels.forEach(c => {
+      c.overwritePermissions(msg.guild.id, {
+        SEND_MESSAGES: true,
+        READ_MESSAGES: true
+    });
+});
+    msg.channel.send('**تم اظهار جميع الرومات**')
+  }
+});
+
+
+
+
+client.on('message', message => {
+     if (message.content === (prefix + "bot")) {
+         if(!message.channel.guild) return;
+     let embed = new Discord.RichEmbed()
+  .setColor("#8650a7")
+  .addField("** :white_check_mark: Servers: **" , client.guilds.size)
+  .addField("** :white_check_mark: Users: **" , client.users.size)
+  .addField("** :white_check_mark: Channels: **" , client.channels.size)
+    .addField("** :rocket: Ping **" , Date.now() - message.createdTimestamp)
+    .setTimestamp()
+  message.channel.sendEmbed(embed);
+    }
+});
+
+
+client.on('message', message => {
+     if (message.content === "help-") {
+message.author.send("**اوامر البوت**" + `  **
+لمسح شات اكتب  مسح
+ 
+لو تبي تنشى شات كتابي اكتب --->ch
+
+لو تبي تنشى روم صوتي اكتب --->cv 
+
+لوتبي تقفل شات اكتب ---> $mu
+
+لو تبي تفك شات اكتب $un
+**`);
+    }
+});     
+
+
+
+
+
