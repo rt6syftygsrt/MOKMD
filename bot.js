@@ -24,12 +24,6 @@ client.user.setGame(``,'https://www.twitch.tv/tarikrs');                        
 
 
 
-         
-
-client.on('تثبيت', () => {
-var x = client.channels.get("504807381373419541");
-if (x) x.join();
-});
 
 
 
